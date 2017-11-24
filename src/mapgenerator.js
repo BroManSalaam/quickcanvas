@@ -26,7 +26,6 @@ class MapGenerator {
             for (let c = 0; c < mapLayout[r].length; c++) {
 
                 if (mapLayout[r][c] == undefined) {
-                    console.log(mapLayout[r][c]);
                     continue;
                 }
                 // check for types
@@ -39,7 +38,6 @@ class MapGenerator {
                 }
             }
         }
-        console.log(map);
 
         return map
     }
@@ -56,7 +54,6 @@ class MapGenerator {
     static appendChunk(map, chunk, row) {
 
         for (let r = 0; r < map.length; r++) {
-            console.log(map[r + row]);
             map[r + row] = map[r + row].concat(chunk[r]);
         }
     }

@@ -26,7 +26,6 @@ class Game {
 
         //MapGenerator.pushChunk(mapLayout, chunk, 0);
         MapGenerator.appendChunk(mapLayout, chunk, 0);
-        console.log(mapLayout);
 
         this.map = MapGenerator.generate(mapLayout);
 
@@ -40,7 +39,10 @@ class Game {
         });
 
         this.world.on("beginContact", function (evt) {
-
+        	
+        	if(evt.shapeA instanceof Terrain) {
+        		
+        	}
         });
 
         this.isPlaying = false;
@@ -82,8 +84,14 @@ class Game {
             //this.enemy_melee[i].update();
         }
 
-        Camera.move(player.getX() - this.screen_width / 2 + player.getWidth() / 2, player.getY() - this.screen_height / 2 + player.getHeight() / 2);
-
+        Camera.move(player.x - this.screen_width / 2 + player.getWidth() / 2, player.y - this.screen_height / 2 + player.getHeight() / 2);
+        
+        if(player.x > 400) {
+        	audio.pauseMusic("menu");
+        } else {
+        	audio.playMusic("menu");
+        }
+        
         this.render(this.render_end - this.render_start);
 
         if (this.isPlaying) {
@@ -106,12 +114,8 @@ class Game {
                 if (this.map[r][c] == undefined) {
                     continue;
                 }
-                if (this.map[r][c] instanceof Terrain) {
-                    this.map[r][c].draw();
-                }
-                else if (this.map[r][c] instanceof Wall) {
-                    this.map[r][c].draw();
-                }
+                
+                this.map[r][c].draw();
             }
 
         }
@@ -135,7 +139,7 @@ class Game {
     }
 
     static clearScreen() {
-        ctx.clearRect(0, 0, canvas.width * 100, canvas.height * 100);
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
     }
 
     static isReady() {
@@ -159,7 +163,7 @@ class Game {
 
                 // check for spawn block
                 if (this.map[r][c].key == 0) {
-                    console.log('player spawn set to ' + this.map[r][c].x + ' ' + this.map[r][c].x);
+                    //console.log('player spawn set to ' + this.map[r][c].x + ' ' + this.map[r][c].x);
                     player.setX(this.map[r][c].x);
                     player.setY(this.map[r][c].y);
                 }

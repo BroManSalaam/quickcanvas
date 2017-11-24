@@ -3,7 +3,6 @@ class MeleeEnemy extends Enemy {
     constructor(x, y, spd) {
         super();
 
-
         this.spd = spd;
         this.velocity_spd = this.spd / 100;
 
@@ -42,19 +41,19 @@ class MeleeEnemy extends Enemy {
 
     getKeyFrame() {
 
-        if (player.getX() < this.getX()) {
+        if (player.x < this.x) {
             this.previousY = this.leftY;
             return MEC.leftY;
         }
-        if (player.getX() > this.getX()) {
+        if (player.x > this.x) {
             this.previousY = this.rightY;
             return MEC.rightY;
         }
-        if (player.getY() < this.getY()) {
+        if (player.y < this.y) {
             this.previousY = this.upY;
             return MEC.upY;
         }
-        if (player.getY() > this.getY()) {
+        if (player.y > this.y) {
             this.previousY = this.downY;
             return MEC.downY;
         }
@@ -64,43 +63,42 @@ class MeleeEnemy extends Enemy {
 
     update() {
 
-        if (player.getX() >= this.getX()) {
-            this.setX(this.getX() + this.spd);
+        if (player.x >= this.x) {
+            this.setX(this.x + this.spd);
         }
-        if (player.getX() <= this.getX()) {
-            this.setX(this.getX() - this.spd);
+        if (player.x <= this.x) {
+            this.setX(this.x - this.spd);
         }
-        if (player.getY() >= this.getY()) {
-            this.setY(this.getY() + this.spd);
+        if (player.y >= this.y) {
+            this.setY(this.y + this.spd);
         }
-        if (player.getY() <= this.getY()) {
-            this.setY(this.getY() - this.spd);
+        if (player.y <= this.y) {
+            this.setY(this.y - this.spd);
         }
     }
 
     draw() {
         Renderer.drawImage(MEC.img, MEC.spr_width * this.cf, this.getKeyFrame(), MEC.spr_width, MEC.spr_height,
-            this.getX() - this.getWidth() / 2, this.getY() - this.getHeight() / 2, this.getWidth(), this.getHeight());
+            this.x - this.getWidth() / 2, this.y - this.getHeight() / 2, this.getWidth(), this.getHeight());
     }
 
     drawBoundingBox() {
 
-        Renderer.drawShapeBoundingBox(this.shape, this.getX(), this.getY(), this.getWidth(), this.getHeight());
+        Renderer.drawShapeBoundingBox(this.shape, this.x, this.y, this.getWidth(), this.getHeight());
     }
 
 
     drawPosition() {
         ctx.fillStyle = "blue";
-        Renderer.fillRect(this.getX(), this.getY(), 5, 5);
+        Renderer.fillRect(this.x, this.y, 5, 5);
         ctx.fillStyle = "black";
     }
-
-    getX() {
-        return this.body.position[0];
+    
+    get x() {
+    	return this.body.position[0];
     }
-
-    getY() {
-        return this.body.position[1];
+    get y() {
+    	return this.body.position[1];
     }
 
     setX(x) {

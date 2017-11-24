@@ -1,5 +1,9 @@
 let canvas;
+let canvas_map;
+
 let ctx;
+let ctx_map;
+
 let player;
 let game;
 let audio;
@@ -15,7 +19,7 @@ $(document).ready(function () {
     $("body").css("overflow", "hidden");
 
     audio = new AudioManager();
-    audio.music.menu.play();
+    //audio.music.menu.play();
 
      //Camera.zoom(.5, canvas.width, canvas.height);
 

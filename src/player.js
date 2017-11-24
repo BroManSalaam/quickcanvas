@@ -157,11 +157,11 @@ class Player {
         }
 
         Renderer.drawBoxImage(this.img, this.shape, this.spr_width * this.cf, this.getKeyFrame(), this.spr_width, this.spr_height,
-            this.getX(), this.getY(), this.getWidth(), this.getHeight());
+            this.x, this.y, this.getWidth(), this.getHeight());
     }
 
     drawBoundingBox() {
-        Renderer.drawShapeBoundingBox(this.shape, this.getX(), this.getY(), this.getWidth(), this.getHeight());
+        Renderer.drawShapeBoundingBox(this.shape, this.x, this.y, this.getWidth(), this.getHeight());
     }
 
     get velocity() {
@@ -174,14 +174,6 @@ class Player {
 
     setXVelocity(v) {
         this.velocity[0] = v;
-    }
-
-    getX() {
-        return this.body.position[0];
-    }
-
-    getY() {
-        return this.body.position[1];
     }
 
     get x() {
