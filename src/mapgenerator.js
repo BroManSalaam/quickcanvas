@@ -1,4 +1,4 @@
-MapConstants = {
+let MapConstants = {
     TILE_WIDTH: 66,
     TILE_HEIGHT: 66,
     x: 0,

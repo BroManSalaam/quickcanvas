@@ -4,30 +4,23 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var AnimatedTerrain = function (_Terrain) {
-    _inherits(AnimatedTerrain, _Terrain);
-
+var AnimatedTerrain = function () {
     function AnimatedTerrain(key, x, y) {
+        var _this = this;
+
         _classCallCheck(this, AnimatedTerrain);
 
-        var _this = _possibleConstructorReturn(this, (AnimatedTerrain.__proto__ || Object.getPrototypeOf(AnimatedTerrain)).call(this, key, x, y));
+        this.dt = 120;
+        this.cf = 0;
+        this.maxcf = 3;
 
-        _this.dt = 120;
-        _this.cf = 0;
-        _this.maxcf = 3;
-
-        _this.loop = setInterval(function () {
+        this.loop = setInterval(function () {
             if (_this.cf > _this.maxcf) {
                 _this.cf = 0;
             } else {
                 _this.cf++;
             }
-        }, _this.dt);
-        return _this;
+        }, this.dt);
     }
 
     _createClass(AnimatedTerrain, [{
@@ -38,7 +31,7 @@ var AnimatedTerrain = function (_Terrain) {
     }]);
 
     return AnimatedTerrain;
-}(Terrain);
+}();
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -609,7 +602,7 @@ var Key = function () {
  * 0 - grass tile object, with all of characteristics of grass like its body
  */
 
-MapKey = [];
+var MapKey = [];
 'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
@@ -618,7 +611,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-MapConstants = {
+var MapConstants = {
     TILE_WIDTH: 66,
     TILE_HEIGHT: 66,
     x: 0,

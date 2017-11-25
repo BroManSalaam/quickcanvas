@@ -34,4 +34,4 @@ class Key {
  * 0 - grass tile object, with all of characteristics of grass like its body
  */
 
-MapKey = [];
+let MapKey = [];

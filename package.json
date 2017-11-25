@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "babel": "babel --presets es2015 ./src/*.js ./src/enemies/*.js -o ./build/main.bundle.js && minify /build/main.bundle.js",
-    "minify": "minify /build/main.bundle.js",
+    "babel": "babel --presets es2015 ./src/*.js ./src/enemies/*.js -o ./build/main.bundle.js",
+    "minify": "minify build/main.bundle.js",
     "start": "http-server -p 9000"
   },
   "author": "",
@@ -15,9 +15,9 @@
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
     "babel-preset-es2015": "^6.24.1",
+    "minify": "3.0.2",
     "http-server": "^0.10.0"
   },
   "dependencies": {
-    "p2": "^0.7.1"
   }
 }
