@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "babel": "babel --presets es2015 ./src/*.js ./src/enemies/*.js -o ./build/main.bundle.js",
+    "babel": "babel --presets es2015 ./src/*.js ./src/enemies/*.js -o ./build/main.bundle.js && minify /build/main.bundle.js",
+    "minify": "minify /build/main.bundle.js",
     "start": "http-server -p 9000"
   },
   "author": "",
@@ -17,5 +18,6 @@
     "http-server": "^0.10.0"
   },
   "dependencies": {
+    "p2": "^0.7.1"
   }
 }

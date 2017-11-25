@@ -9,7 +9,8 @@ class AudioManager {
 
         // game music
         this.music = {
-        	0: new Audio('src/assets/audio/music/menu.mp3') // menu
+            0: new Audio('src/assets/audio/music/menu.mp3'),
+            1: new Audio('src/assets/audio/music/heman.mp3')
         };
         
         // List of actively playing music (excludes sounds)

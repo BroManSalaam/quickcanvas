@@ -1,23 +1,29 @@
 class Key {
 
-    constructor(id, src, isTerrain) {
-
+    constructor() {
         this.img = new Image();
-        this.isTerrain = isTerrain;
+    }
+
+    load(src, isTerrain) {
+
+        let start = Date.now();
 
         if (!src) {
             this.img.src = 'src/assets/img/img_null.png'
         } else {
             this.img.src = src;
         }
-        this.img.onload = this.onload;
-        this.id = id;
-        this.isLoaded = false;
-    }
 
-    onload() {
-        console.log('key: ' + this.id + ' loaded image');
-        this.isLoaded = true;
+        this.isTerrain = isTerrain;
+
+        return new Promise((resolve, reject) => {
+            this.img.onload = () => {
+                resolve(Date.now() - start);
+            }
+            this.img.onerror = () => {
+                reject();
+            }
+        });
     }
 }
 
@@ -28,8 +34,4 @@ class Key {
  * 0 - grass tile object, with all of characteristics of grass like its body
  */
 
-MapKey = [
-    new Key(0, '', true),
-    new Key(0, 'src/assets/map/grass.png', true),
-    new Key(1, 'src/assets/map/wall.png', false)
-];
+MapKey = [];

@@ -1,7 +1,7 @@
 class AnimatedTerrain extends Terrain {
 
-    constructor() {
-
+    constructor(key, x, y) {
+        super(key, x, y);
 
         this.dt = 120;
         this.cf = 0;

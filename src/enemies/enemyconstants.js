@@ -1,40 +1,49 @@
 /**
  * 
- * @name MEC - MeleeEnemyConstants
+ * @name MeleeEnemyConstants - MeleeEnemyConstants
  * 
- * since there are going to be lots of the same type of variety of enemy, 
+ * since there are going to be lots of the same type of variety of enemy; 
  * we will just have a "cookie cutter" object with all the necessary pieces of data
  * 
  */
-let MEC = {
+class MeleeEnemyConstants {
 
-    leftY: 64,
-    rightY: 192,
-    upY: 0,
-    downY: 128,
+    constructor() {
 
-    spr_width: 64,
-    spr_height: 64,
+        this.leftY = 64;
+        this.rightY = 192;
+        this.upY = 0;
+        this.downY = 128;
 
-    dt: 0,
+        this.spr_width = 64;
+        this.spr_height = 64;
 
-    maxcf: 6,
+        this.dt = 200;
 
-    velocity_max: 10,
-    velocity_decay: 1.01,
+        this.maxcf = 6;
 
-    isloaded: false,
+        this.velocity_start = 30;
 
-    img: new Image(),
-
-    init: () => {
-        MEC.img.src = "src/assets/spritesheets/raider.png";
-        MEC.img.onload = MEC.onload;
-    },
-
-    onload: () => {
-        console.log("loaded melee enemy sprite");
-        MEC.isloaded = true;
+        this.img = new Image();
     }
 
+    load() {
+        return new Promise((resolve, reject) => {
+
+            let start = Date.now();
+            this.img.src = "src/assets/spritesheets/raider.png";
+
+            this.img.onload = () => {
+                resolve(Date.now() - start);
+            }
+            this.img.onerror = () => {
+                reject();
+            }
+        });
+    }
+
+
+
 };
+
+let mec_default = new MeleeEnemyConstants();

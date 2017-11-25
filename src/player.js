@@ -20,9 +20,6 @@ class Player {
         this.dt_count = 0;
 
         this.img = new Image();
-        this.img.src = "src/assets/spritesheets/SpriteSheet.png";
-        this.isLoaded = false;
-        this.img.onload = this.onload();
 
         this.isLeft = false;
         this.isRight = false;
@@ -39,15 +36,15 @@ class Player {
         // Physics
 
         this.spd = spd;
-        this.velocity_spd = .2;
+        this.velocity_spd = 3.3;
         // starting velocity after direction change
-        this.velocity_start = 50;
+        this.velocity_start = 55;
 
         // maximum velocity achievable by player through normal movement
         // set this slightly lower than what you want the maximum to be due to the amount of time it takes to update from input
         this.velocity_max = 100;
         // rate at which the velocity returns to zero if the player decides to suddenly change direction
-        this.velocity_decay = 2;
+        this.velocity_decay = this.velocity_spd * 8;
 
         this.body = new p2.Body({
             position: [x, y],
@@ -65,9 +62,19 @@ class Player {
         this.body.addShape(this.shape);
     }
 
-    onload() {
-        console.log('player sprite loaded');
-        this.isLoaded = true;
+    load() {
+        return new Promise((resolve, reject) => {
+
+            let start = Date.now();
+            this.img.src = "src/assets/spritesheets/SpriteSheet.png";
+
+            this.img.onload = () => {
+                resolve(Date.now() - start);
+            }
+            this.img.onerror = () => {
+                reject();
+            }
+        });
     }
 
     // get what direction the player is in translated to what direction its pointing to on the sprite sheet
@@ -92,10 +99,23 @@ class Player {
         return this.previousY;
     }
 
-    update() {
+    update(dt) {
         // scaling dt with velocity
-        var velocity_average = (Math.abs(this.body.velocity[0]) + Math.abs(this.body.velocity[1])) > 1 ? (Math.abs(this.body.velocity[0]) + Math.abs(this.body.velocity[1])) : 1;
-        this.dt = 250 / velocity_average < this.dt_max ? this.dt_max : 300 / velocity_average;
+        //let velocity_average = (Math.abs(this.body.velocity[0]) + Math.abs(this.body.velocity[1])) > 1 ? (Math.abs(this.body.velocity[0]) + Math.abs(this.body.velocity[1])) : 1;
+        //this.dt = 250 / velocity_average < this.dt_max ? this.dt_max : 300 / velocity_average;
+
+        this.dt_count = (dt || 1/60) + (this.dt_count || 0);
+        // if we've passed our delta time, reset the counter and keep going
+        if(this.dt_count >= this.dt) {
+            this.cf++;
+            this.dt_count = 0;
+        }
+        if (this.cf >= this.maxcf) {
+            this.cf = 0;
+        } else if (!this.isLeft && !this.isUp && !this.isDown && !this.isRight) {
+            this.cf = 0;
+        }
+
 
         // if left and not over max velocity
         if (this.isLeft && Math.abs(this.body.velocity[0]) < this.velocity_max) {
@@ -143,19 +163,7 @@ class Player {
         }
     }
 
-    draw(dt) {
-        this.dt_count = (dt || 1/60) + (this.dt_count || 0);
-        // if we've passed our delta time, reset the counter and keep going
-        if(this.dt_count >= this.dt) {
-            this.cf++;
-            this.dt_count = 0;
-        }
-        if (this.cf >= this.maxcf) {
-            this.cf = 0;
-        } else if (!this.isLeft && !this.isUp && !this.isDown && !this.isRight) {
-            this.cf = 0;
-        }
-
+    draw() {
         Renderer.drawBoxImage(this.img, this.shape, this.spr_width * this.cf, this.getKeyFrame(), this.spr_width, this.spr_height,
             this.x, this.y, this.getWidth(), this.getHeight());
     }

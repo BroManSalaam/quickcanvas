@@ -25,16 +25,23 @@ class MapGenerator {
         for (let r = 0; r < mapLayout.length; r++) {
             for (let c = 0; c < mapLayout[r].length; c++) {
 
-                if (mapLayout[r][c] == undefined) {
-                    continue;
-                }
-                // check for types
-                if (MapKey[mapLayout[r][c]].isTerrain) {
-                    map[r][c] = new Terrain(mapLayout[r][c],
-                        c * MapConstants.TILE_WIDTH + MapConstants.x, r * MapConstants.TILE_HEIGHT + MapConstants.y);
-                } else {
-                    map[r][c] = new Wall(mapLayout[r][c], c * MapConstants.TILE_WIDTH + MapConstants.x, r * MapConstants.TILE_HEIGHT + MapConstants.y,
-                        MapConstants.TILE_WIDTH, MapConstants.TILE_HEIGHT);
+                try {
+                    if (mapLayout[r][c] == undefined || typeof mapLayout[r][c] == undefined) {
+                        continue;
+                    }
+                    // check for types
+                    if (MapKey[mapLayout[r][c]].isTerrain) {
+                        map[r][c] = new Terrain(mapLayout[r][c],
+                            c * MapConstants.TILE_WIDTH + MapConstants.x, r * MapConstants.TILE_HEIGHT + MapConstants.y);
+                    } else {
+                        map[r][c] = new Wall(mapLayout[r][c], c * MapConstants.TILE_WIDTH + MapConstants.x, r * MapConstants.TILE_HEIGHT + MapConstants.y,
+                            MapConstants.TILE_WIDTH, MapConstants.TILE_HEIGHT);
+                    }
+
+                } catch (err) {
+                    if (err instanceof TypeError) {
+                        console.log('rdeg');
+                    }
                 }
             }
         }

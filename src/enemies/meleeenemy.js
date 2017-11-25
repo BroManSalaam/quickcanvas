@@ -7,19 +7,9 @@ class MeleeEnemy extends Enemy {
         this.velocity_spd = this.spd / 100;
 
         this.cf = 0;
+        this.dt_count = 0;
 
         this.direction = 0;
-
-        setInterval(() => {
-
-            if (this.cf == MEC.maxcf) {
-                this.cf = 0;
-            } else {
-                this.cf++;
-            }
-
-        }, MEC.dt)
-
         // physics
 
         this.body = new p2.Body({
@@ -41,57 +31,66 @@ class MeleeEnemy extends Enemy {
 
     getKeyFrame() {
 
-        if (player.x < this.x) {
-            this.previousY = this.leftY;
-            return MEC.leftY;
-        }
-        if (player.x > this.x) {
-            this.previousY = this.rightY;
-            return MEC.rightY;
-        }
         if (player.y < this.y) {
             this.previousY = this.upY;
-            return MEC.upY;
+            return mec_default.upY;
         }
         if (player.y > this.y) {
             this.previousY = this.downY;
-            return MEC.downY;
+            return mec_default.downY;
+        }
+        if (player.x < this.x) {
+            this.previousY = this.leftY;
+            return mec_default.leftY;
+        }
+        if (player.x > this.x) {
+            this.previousY = this.rightY;
+            return mec_default.rightY;
         }
 
         return this.previousY;
     }
 
-    update() {
+    update(dt) {
+        // if we passed over the delta time, increment the frame count if we are not already at the max
+        this.dt_count = (dt || 1/60) + (this.dt_count || 0);
+
+        if (this.dt_count >= mec_default.dt) {
+            
+            if(this.cf < mec_default.maxcf) {
+                this.cf++
+            } else {
+                this.cf = 0;
+            }
+
+            this.dt_count = 0;
+        }
 
         if (player.x >= this.x) {
-            this.setX(this.x + this.spd);
+            this.velocity[0] = mec_default.velocity_start;
         }
         if (player.x <= this.x) {
-            this.setX(this.x - this.spd);
+            this.velocity[0] = -mec_default.velocity_start;
         }
         if (player.y >= this.y) {
-            this.setY(this.y + this.spd);
+            this.velocity[1] = mec_default.velocity_start;
         }
         if (player.y <= this.y) {
-            this.setY(this.y - this.spd);
+            this.velocity[1] = -mec_default.velocity_start;
         }
     }
 
     draw() {
-        Renderer.drawImage(MEC.img, MEC.spr_width * this.cf, this.getKeyFrame(), MEC.spr_width, MEC.spr_height,
-            this.x - this.getWidth() / 2, this.y - this.getHeight() / 2, this.getWidth(), this.getHeight());
+        Renderer.drawImage(mec_default.img, mec_default.spr_width * this.cf, this.getKeyFrame(), mec_default.spr_width, mec_default.spr_height,
+            this.x - this.width / 2, this.y - this.width / 2, this.width, this.width);
     }
 
     drawBoundingBox() {
-
-        Renderer.drawShapeBoundingBox(this.shape, this.x, this.y, this.getWidth(), this.getHeight());
+        Renderer.drawShapeBoundingBox(this.shape, this.x, this.y, this.width, this.width);
     }
 
-
-    drawPosition() {
-        ctx.fillStyle = "blue";
-        Renderer.fillRect(this.x, this.y, 5, 5);
-        ctx.fillStyle = "black";
+    get velocity() {
+        return this.body.velocity;
     }
     
     get x() {
@@ -109,11 +108,11 @@ class MeleeEnemy extends Enemy {
         this.body.position[1] = y;
     }
 
-    getWidth() {
+    get width() {
         return this.shape.width;
     }
 
-    getHeight() {
+    get width() {
         return this.shape.height;
     }
 

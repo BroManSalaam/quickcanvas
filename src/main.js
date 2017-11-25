@@ -19,7 +19,6 @@ $(document).ready(function () {
     $("body").css("overflow", "hidden");
 
     audio = new AudioManager();
-    //audio.music.menu.play();
 
      //Camera.zoom(.5, canvas.width, canvas.height);
 
