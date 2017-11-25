@@ -59,13 +59,25 @@ var AssetManager = function () {
                 assets[0] = mec_default.load();
                 assets[1] = player.load();
 
-                var key_src = ['', 'src/assets/map/grass.png', 'src/assets/map/wall.png'];
+                // images that correspond to a number in key_type
+                var key_src = ['', // reserved: empty tile
+                'src/assets/map/grass.png', // reserved: spawn point
+                'src/assets/map/grass.png', 'src/assets/map/wall.png'];
 
-                var key_isTerrain = [true, true, false];
+                // define type of tile based on key given
+                var key_type = [KeyConstants.EMPTY, // reserved: empty tile
+                KeyConstants.SPAWN, // reserved: spawn point
+                KeyConstants.TERRAIN, KeyConstants.WALL];
+
+                /*
+                key - pair
+                type - src
+                  the key will also determine certain attributes
+                */
 
                 for (var i = 0; i < key_src.length; i++) {
                     MapKey[i] = new Key();
-                    assets[i + 2] = MapKey[i].load(key_src[i], key_isTerrain[i]);
+                    assets[i + 2] = MapKey[i].load(key_src[i], key_type[i]);
                 }
 
                 Promise.all(assets).then(function (times) {
@@ -73,8 +85,8 @@ var AssetManager = function () {
                         return a + b;
                     }, 0) + ' ms');
                     _this.isLoaded = true;
-                }).catch(function () {
-                    throw new Error('LOADING ERROR: could not load assets');
+                }).catch(function (err) {
+                    throw err;
                 });
 
                 this.isLoaded = true;
@@ -282,6 +294,21 @@ var Constants = {
     GROUP_PLAYER: 1,
     GROUP_WALL: 2,
     GROUP_ENEMY: 4
+
+};
+
+var MapConstants = {
+    TILE_WIDTH: 66,
+    TILE_HEIGHT: 66,
+    x: 0,
+    y: 0
+};
+
+var KeyConstants = {
+    EMPTY: 0,
+    SPAWN: 1,
+    TERRAIN: 2,
+    WALL: 3
 };
 "use strict";
 
@@ -446,7 +473,7 @@ var Game = function () {
                     }
 
                     // check for spawn block
-                    if (this.map[r][c].key == 0) {
+                    if (this.map[r][c].key == KeyConstants.SPAWN) {
                         //console.log('player spawn set to ' + this.map[r][c].x + ' ' + this.map[r][c].x);
                         player.setX(this.map[r][c].x);
                         player.setY(this.map[r][c].y);
@@ -466,13 +493,23 @@ var Game = function () {
         key: "generateMap",
         value: function generateMap() {
 
+            /*
+            Key constants for referance
+              let KeyConstants = {
+                EMPTY : 0,
+                SPAWN : 1,
+                TERRAIN : 2,
+                WALL : 3
+            };
+            */
+
             // original map that will be converted to terrain and walls though the map generator
-            var mapLayout = [[2, 2, 2, 2], [2, 1, 2, 2], [1, 1, 2, 2], [1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1]];
+            var mapLayout = [[3, 3, 3, 3, 3, 3, 3, 3], [3, 2, 2, 2, 2, 2, 2, 2], [3, 2, 2, 2, 2, 2, 2, 2], [3, 2, 2, 2, 1, 2, 2, 2], [2, 2, 2, 2, 2, 2, 2, 3], [2, 2, 2, 2, 2, 2, 2, 3], [3, 3, 3, 3, 3, 2, 2, 0]];
 
             var chunk = [[0, 1, 1, 1], [1, 1, 1, 1], [1, 1, 0, 1], [1, 1, 1, 1]];
 
             //MapGenerator.pushChunk(mapLayout, chunk, 0);
-            MapGenerator.appendChunk(mapLayout, chunk, 0);
+            //MapGenerator.appendChunk(mapLayout, chunk, 0);
 
             this.map = MapGenerator.generate(mapLayout);
         }
@@ -553,7 +590,7 @@ $(document).ready(function () {
 
     game.start();
 });
-'use strict';
+"use strict";
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -567,19 +604,14 @@ var Key = function () {
     }
 
     _createClass(Key, [{
-        key: 'load',
-        value: function load(src, isTerrain) {
+        key: "load",
+        value: function load(src, type) {
             var _this = this;
 
             var start = Date.now();
+            this.type = type;
 
-            if (!src) {
-                this.img.src = 'src/assets/img/img_null.png';
-            } else {
-                this.img.src = src;
-            }
-
-            this.isTerrain = isTerrain;
+            this.img.src = src;
 
             return new Promise(function (resolve, reject) {
                 _this.img.onload = function () {
@@ -605,18 +637,9 @@ var Key = function () {
 var MapKey = [];
 'use strict';
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var MapConstants = {
-    TILE_WIDTH: 66,
-    TILE_HEIGHT: 66,
-    x: 0,
-    y: 0
-};
 
 var MapGenerator = function () {
     function MapGenerator() {
@@ -646,32 +669,28 @@ var MapGenerator = function () {
                 for (var c = 0; c < mapLayout[r].length; c++) {
 
                     try {
-                        if (mapLayout[r][c] == undefined || _typeof(mapLayout[r][c]) == undefined) {
+                        if (MapKey[mapLayout[r][c]].type == KeyConstants.EMPTY) {
                             continue;
-                        }
-                        // check for types
-                        if (MapKey[mapLayout[r][c]].isTerrain) {
+                        } else if (MapKey[mapLayout[r][c]].type == KeyConstants.TERRAIN || MapKey[mapLayout[r][c]].type == KeyConstants.SPAWN) {
                             map[r][c] = new Terrain(mapLayout[r][c], c * MapConstants.TILE_WIDTH + MapConstants.x, r * MapConstants.TILE_HEIGHT + MapConstants.y);
-                        } else {
+                        } else if (MapKey[mapLayout[r][c]].type == KeyConstants.WALL) {
                             map[r][c] = new Wall(mapLayout[r][c], c * MapConstants.TILE_WIDTH + MapConstants.x, r * MapConstants.TILE_HEIGHT + MapConstants.y, MapConstants.TILE_WIDTH, MapConstants.TILE_HEIGHT);
                         }
                     } catch (err) {
-                        if (err instanceof TypeError) {
-                            console.log('rdeg');
-                        }
+                        console.log('error while generating map at row:' + r + ' col: ' + c);
+                        console.log(err);
                     }
                 }
             }
-
             return map;
         }
 
         /**
          * add a chunk to the right hand side of a map
          * 
-         * @param {*Array} map map to append chunk to
-         * @param {*Array} chunk chunk to be added to map
-         * @param {*Number} row what row to insert chunk into
+         * @param {Array} map map to append chunk to
+         * @param {Array} chunk chunk to be added to map
+         * @param {Number} row what row to insert chunk into
          * 
          * @default row will start at row 0
          */
@@ -684,31 +703,31 @@ var MapGenerator = function () {
                 map[r + row] = map[r + row].concat(chunk[r]);
             }
         }
+        /**
+         * 
+         * @param {Array} map 
+         * @param {Array} chunk 
+         * @param {Number} row 
+         * @param {Number} col 
+         */
+
     }, {
-        key: 'pushChunk',
-        value: function pushChunk(map, chunk, col) {
+        key: 'addChunk',
+        value: function addChunk(map, chunk, row, col) {
+            // let chunk = [
+            //     [0, 1, 1, 1],
+            //     [1, 1, 1, 1],
+            //     [1, 1, 0, 1],
+            //     [1, 1, 1, 1],
+            //     [0, 0, 0, HERE]
+            // ];
 
-            if (col < 0) {
-                throw new Error('pushChunk() cannot take a negative collumn index');
-            }
+            for (var r = 0; r < map.length; r++) {
+                for (var c = 0; c < map[r].length; c++) {
 
-            for (var i = 0; i < chunk.length; i++) {
-
-                // if they specify a collumn, add undefined tiles until we reach that tile, then fill in the chunk for that index
-                if (col > 0) {
-                    var array = [];
-
-                    for (var e = 0; e < col; e++) {
-                        array[e] = undefined;
-                    }
-                    array = array.concat(chunk[i]);
-                    map.push(array);
-                } else {
-                    map.push(chunk[i]);
+                    map[r][c];
                 }
             }
-
-            return map;
         }
     }]);
 
@@ -1095,6 +1114,7 @@ var Wall = function () {
     function Wall(key, x, y, w, h) {
         _classCallCheck(this, Wall);
 
+        // [row][col] in map
         this.key = key;
 
         this.body = new p2.Body({

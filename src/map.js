@@ -4,26 +4,24 @@ class Key {
         this.img = new Image();
     }
 
-    load(src, isTerrain) {
+    load(src, type) {
 
         let start = Date.now();
+        this.type = type;
 
-        if (!src) {
-            this.img.src = 'src/assets/img/img_null.png'
-        } else {
+        if (src && this.type != KeyConstants.EMPTY) {
+
             this.img.src = src;
+
+            return new Promise((resolve, reject) => {
+                this.img.onload = () => {
+                    resolve(Date.now() - start);
+                }
+                this.img.onerror = () => {
+                    reject();
+                }
+            });
         }
-
-        this.isTerrain = isTerrain;
-
-        return new Promise((resolve, reject) => {
-            this.img.onload = () => {
-                resolve(Date.now() - start);
-            }
-            this.img.onerror = () => {
-                reject();
-            }
-        });
     }
 }
 

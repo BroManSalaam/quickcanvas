@@ -2,6 +2,7 @@ class Wall {
 
     constructor(key, x, y, w, h) {
 
+        // [row][col] in map
         this.key = key;
 
         this.body = new p2.Body({

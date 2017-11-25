@@ -152,7 +152,7 @@ class Game {
                 }
 
                 // check for spawn block
-                if (this.map[r][c].key == 0) {
+                if (this.map[r][c].key == KeyConstants.SPAWN) {
                     //console.log('player spawn set to ' + this.map[r][c].x + ' ' + this.map[r][c].x);
                     player.setX(this.map[r][c].x);
                     player.setY(this.map[r][c].y);
@@ -171,25 +171,35 @@ class Game {
 
     generateMap() {
 
+        /*
+        Key constants for referance
+
+        let KeyConstants = {
+            EMPTY : 0,
+            SPAWN : 1,
+            TERRAIN : 2,
+            WALL : 3
+        };
+        */
+
         // original map that will be converted to terrain and walls though the map generator
         let mapLayout = [
-            [2, 2, 2, 2],
-            [2, 1, 2, 2],
-            [1, 1, 2, 2],
-            [1, 1, 1, 1],
-            [1, 1, 1, 1],
-            [1, 1, 1, 1],
+            [3, 3, 3, 3, 3, 3, 3, 3],
+            [3, 2, 2, 2, 2, 2, 2, 2],
+            [3, 2, 2, 2, 2, 2, 2, 2],
+            [3, 2, 2, 2, 1, 2, 2, 2],
+            [2, 2, 2, 2, 2, 2, 2, 3],
+            [2, 2, 2, 2, 2, 2, 2, 3],
+            [3, 3, 3, 3, 3, 2, 2, 3]
         ];
 
         let chunk = [
-            [0, 1, 1, 1],
-            [1, 1, 1, 1],
-            [1, 1, 0, 1],
-            [1, 1, 1, 1],
+            [3, 2, 2, 3],
+            [2, 2, 2, 3],
+            [2, 2, 2, 3],
+            [3, 2, 2, 3],
         ];
-
-        //MapGenerator.pushChunk(mapLayout, chunk, 0);
-        MapGenerator.appendChunk(mapLayout, chunk, 0);
+        MapGenerator.addChunk(mapLayout, chunk, 3, 3);
 
         this.map = MapGenerator.generate(mapLayout);
     }
