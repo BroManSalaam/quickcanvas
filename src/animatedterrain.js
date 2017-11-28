@@ -3,16 +3,22 @@ class AnimatedTerrain {
     constructor(key, x, y) {
 
         this.dt = 120;
+        this.dt_count = 0;
         this.cf = 0;
         this.maxcf = 3;
+    }
 
-        this.loop = setInterval(() => {
+    update(dt) {
+
+        if((this.dt_count + dt) >= this.dt) {
+            this.dt_count = 0;
+
             if(this.cf > this.maxcf) {
                 this.cf = 0;
             } else {
                 this.cf++;
             }
-        }, this.dt); 
+        }
     }
 
     draw() {

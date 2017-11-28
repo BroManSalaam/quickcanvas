@@ -20,9 +20,9 @@ $(document).ready(function () {
 
     audio = new AudioManager();
 
-     //Camera.zoom(.5, canvas.width, canvas.height);
-
     game = new Game($(window).width(), $(window).height());
+
+    //Camera.zoom(.5);
 
     player = new Player(10, 0, 5.5);
 

@@ -9,6 +9,18 @@ class Game {
 
         this.enemy_melee = [];
         this.walls = [];
+        this.buttons = [];
+
+        this.buttons.push(new Button(0, 0, 200, 200, function () {
+            console.log('clicked1!');
+        }));
+
+        this.buttons.push(new Button(500, 500, 200, 200, function () {
+            console.log('clicked2!');
+        }));
+
+        this.clickX = null;
+        this.clickY = null;
 
         this.enemy_melee.push(new MeleeEnemy(-600, -200, 30));
         this.enemy_melee.push(new MeleeEnemy(-300, -800, 30));
@@ -114,8 +126,6 @@ class Game {
         player.draw();
         player.drawBoundingBox();
 
-        Renderer.fillText("(0, 0)", 0, 0, 100);
-
         for (let i = 0; i < this.enemy_melee.length; i++) {
             this.enemy_melee[i].draw();
             this.enemy_melee[i].drawBoundingBox();
@@ -125,11 +135,15 @@ class Game {
             this.walls[i].draw();
         }
 
+        for (let i = 0; i < this.buttons.length; i++) {
+            this.buttons[i].draw();
+        }
+
         this.render_end = Date.now();
     }
 
     static clearScreen() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.clearRect(0, 0, canvas.width * 2, canvas.height * 2);
     }
 
     isReady() {
@@ -202,5 +216,25 @@ class Game {
         MapGenerator.addChunk(mapLayout, chunk, 3, 3);
 
         this.map = MapGenerator.generate(mapLayout);
+    }
+
+    setClick(x, y) {
+        this.clickX = x;
+        this.clickY = y;
+
+        for (let i = 0; i < this.buttons.length; i++) {
+
+            if (this.isButtonClick(this.buttons[i], x, y)) {
+                this.buttons[i].click();
+            }
+        }
+    }
+
+    isButtonClick(button, x, y) {
+        if (x > button.getX() && x < button.getX() + button.getWidth() && y > button.y && y < button.getY() + button.getHeight()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

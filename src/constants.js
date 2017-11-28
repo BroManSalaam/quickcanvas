@@ -8,8 +8,8 @@ let Constants = {
 };
 
 let MapConstants = {
-    TILE_WIDTH: 66,
-    TILE_HEIGHT: 66,
+    TILE_WIDTH: 64,
+    TILE_HEIGHT: 64,
     x: 0,
     y: 0,
 };

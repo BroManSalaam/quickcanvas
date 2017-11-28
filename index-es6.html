@@ -7,16 +7,16 @@
     <title>LudumDare Game</title>
 
     <link rel="stylesheet" type="text/css" href="./src/assets/css/style.css">
-    
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
 
     <!-- libraries-->
     <script src="./lib/p2.min.js"></script>
-    
+
     <!-- setup -->
     <script src="./src/setup.js"></script>
 
-    <!-- constants --> 
+    <!-- constants -->
     <script src="./src/constants.js"></script>
 
     <!-- enemies -->
@@ -30,13 +30,14 @@
     <!-- game engine-->
     <script src="./src/audio.js"></script>
     <script src="./src/wall.js"></script>
-    <script src="./src/terrain.js"></script> 
+    <script src="./src/terrain.js"></script>
     <script src="./src/animatedterrain.js"></script>
     <script src="./src/mapgenerator.js"></script>
     <script src="./src/map.js"></script>
     <script src="./src/camera.js"></script>
     <script src="./src/renderer.js"></script>
     <script src="./src/assetmanager.js"></script>
+    <script src="./src/ui.js"></script>
 
     <script src="./src/game.js"></script>
     <script src="./src/input.js"></script>
@@ -44,10 +45,11 @@
 </head>
 
 <body>
-    <canvas id='main_canvas'>
-    Your browser is old as dirt, pls update to get the canvas which is required to play our little game thingie :)
-    https://www.google.com/chrome/browser/desktop/index.html
-    </canvas>
+    <div>
+        <canvas id='main_canvas' style="z-index:1;">
+            Your browser is old as dirt, pls update to get the canvas which is required to play our little game thingie :) https://www.google.com/chrome/browser/desktop/index.html
+        </canvas>
+    </div>
 </body>
 
 </html>

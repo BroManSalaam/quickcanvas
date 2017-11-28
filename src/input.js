@@ -32,3 +32,7 @@ function bindInputHandler() {
         }
     }
 }
+
+document.addEventListener('click', function(e) {
+    game.setClick(e.pageX, e.pageY);
+}, true);
