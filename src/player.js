@@ -13,6 +13,7 @@ class Player {
         this.spr_height = 592;
 
         this.cf = 3;
+        // maxcf is the total number of animation frames a sheet has
         this.maxcf = 4;
 
         this.dt = 100;

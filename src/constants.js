@@ -18,5 +18,6 @@ let KeyConstants = {
     EMPTY : 0,
     SPAWN : 1,
     TERRAIN : 2,
-    WALL : 3
+    WALL : 3,
+    ANIMATED : 4
 };

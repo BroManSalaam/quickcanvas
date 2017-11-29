@@ -6,8 +6,6 @@ class MapGenerator {
      * @param {*} isChunked 
      */
     static generate(mapLayout, isChunked) {
-        
-
 
         // create a copy of mapLayout to be filled with newly generated terrain
         let map = [mapLayout.length];
@@ -32,6 +30,9 @@ class MapGenerator {
                     } else if (MapKey[mapLayout[r][c]].type == KeyConstants.WALL) {
                         map[r][c] = new Wall(mapLayout[r][c], c * MapConstants.TILE_WIDTH + MapConstants.x, r * MapConstants.TILE_HEIGHT + MapConstants.y,
                             MapConstants.TILE_WIDTH, MapConstants.TILE_HEIGHT);
+                    } else if(MapKey[mapLayout[r][c]].type == KeyConstants.ANIMATED) {
+                        map[r][c] = new AnimatedTerrain(mapLayout[r][c], 100,
+                            c * MapConstants.TILE_WIDTH + MapConstants.x, r * MapConstants.TILE_HEIGHT + MapConstants.y);
                     }
 
                 } catch (err) {

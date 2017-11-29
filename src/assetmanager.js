@@ -21,7 +21,8 @@ class AssetManager {
                 '', // reserved: empty tile
                 'src/assets/map/grass.png', // reserved: spawn point
                 'src/assets/map/grass.png',
-                'src/assets/map/wall.png'
+                'src/assets/map/wall.png',
+                'src/assets/map/animated.png'
             ];
     
             // define type of tile based on key given
@@ -29,7 +30,8 @@ class AssetManager {
                 KeyConstants.EMPTY, // reserved: empty tile
                 KeyConstants.SPAWN, // reserved: spawn point
                 KeyConstants.TERRAIN,
-                KeyConstants.WALL
+                KeyConstants.WALL,
+                KeyConstants.ANIMATED
             ];
 
             /*

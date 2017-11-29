@@ -8,16 +8,15 @@ class Game {
         this.screen_height = height;
 
         this.enemy_melee = [];
-        this.walls = [];
         this.buttons = [];
 
-        this.buttons.push(new Button(0, 0, 200, 200, function () {
-            console.log('clicked1!');
-        }));
+        // this.buttons.push(new Button(0, 0, 200, 200, function () {
+        //     console.log('clicked1!');
+        // }));
 
-        this.buttons.push(new Button(500, 500, 200, 200, function () {
-            console.log('clicked2!');
-        }));
+        // this.buttons.push(new Button(500, 500, 200, 200, function () {
+        //     console.log('clicked2!');
+        // }));
 
         this.clickX = null;
         this.clickY = null;
@@ -119,6 +118,10 @@ class Game {
                     continue;
                 }
 
+                if (this.map[r][c] instanceof AnimatedTerrain) {
+                    this.map[r][c].update(this.dt);
+                }
+
                 this.map[r][c].draw();
             }
 
@@ -129,10 +132,6 @@ class Game {
         for (let i = 0; i < this.enemy_melee.length; i++) {
             this.enemy_melee[i].draw();
             this.enemy_melee[i].drawBoundingBox();
-        }
-
-        for (let i = 0; i < this.walls.length; i++) {
-            this.walls[i].draw();
         }
 
         for (let i = 0; i < this.buttons.length; i++) {
@@ -199,21 +198,19 @@ class Game {
         // original map that will be converted to terrain and walls though the map generator
         let mapLayout = [
             [3, 3, 3, 3, 3, 3, 3, 3],
-            [3, 2, 2, 2, 2, 2, 2, 2],
-            [3, 2, 2, 2, 2, 2, 2, 2],
+            [3, 2, 2, 2, 2, 4, 2, 3],
+            [3, 2, 4, 2, 2, 2, 2, 2],
             [3, 2, 2, 2, 1, 2, 2, 2],
             [2, 2, 2, 2, 2, 2, 2, 3],
-            [2, 2, 2, 2, 2, 2, 2, 3],
+            [2, 2, 4, 2, 2, 2, 4, 3],
             [3, 3, 3, 3, 3, 2, 2, 3]
         ];
 
         let chunk = [
-            [3, 2, 2, 3],
-            [2, 2, 2, 3],
-            [2, 2, 2, 3],
-            [3, 2, 2, 3],
+            [4, 4, 4],
+            [4, 4, 4],
+            [4, 4, 4]
         ];
-        MapGenerator.addChunk(mapLayout, chunk, 3, 3);
 
         this.map = MapGenerator.generate(mapLayout);
     }
