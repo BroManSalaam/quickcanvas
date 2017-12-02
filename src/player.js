@@ -57,7 +57,7 @@ class Player {
             width: 64,
             height: 64,
             collisionGroup: Constants.GROUP_PLAYER,
-            collisionMask: Constants.GROUP_ENEMY | Constants.GROUP_WALL
+            collisionMask: Constants.groups.GROUP_ENEMY | Constants.groups.GROUP_WALL
         });
 
         this.body.addShape(this.shape);

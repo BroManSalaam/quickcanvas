@@ -22,8 +22,8 @@ class MeleeEnemy extends Enemy {
         this.shape = new p2.Box({
             width: 128,
             height: 128,
-            collisionGroup: Constants.GROUP_ENEMY,
-            collisionMask: Constants.GROUP_PLAYER | Constants.GROUP_WALL
+            collisionGroup: Constants.groups.GROUP_ENEMY,
+            collisionMask: Constants.groups.GROUP_PLAYER | Constants.groups.GROUP_WALL
         });
 
         this.body.addShape(this.shape);

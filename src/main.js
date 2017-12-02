@@ -24,7 +24,7 @@ $(document).ready(function () {
 
     //Camera.zoom(.5);
 
-    player = new Player(10, 0, 5.5);
+    player = new Player(10, 0, 10.5);
 
     game.start();
 });

@@ -31,10 +31,13 @@ class Game {
         });
 
         this.world.on("beginContact", function (evt) {
+            
+            //check collision by gorup
+            if(evt.shapeA.collisionGroup == Constants.groups.GROUP_PLAYER && evt.shapeB.collisionGroup == Constants.groups.GROUP_WALL) {
+                console.log("player");
+            } 
 
-            if (evt.shapeA instanceof Terrain) {
 
-            }
         });
 
         this.states = Object.freeze({

@@ -13,8 +13,8 @@ class Wall {
         this.shape = new p2.Box({
             width: w,
             height: h,
-            collisionGroup: Constants.GROUP_WALL,
-            collisionMask: Constants.GROUP_ENEMY | Constants.GROUP_PLAYER
+            collisionGroup: Constants.groups.GROUP_WALL,
+            collisionMask: Constants.groups.GROUP_ENEMY | Constants.groups.GROUP_PLAYER
         });
 
         this.body.addShape(this.shape);
