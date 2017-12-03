@@ -4,7 +4,8 @@ class AudioManager {
 
         // effects or quick noises
         this.sounds = {
-        	0: new Audio('src/assets/audio/sounds/grenade.mp3')
+        	0: new Audio('src/assets/audio/sounds/grenade.mp3'),
+        	1: new Audio('src/assets/audio/sounds/shot.wav')
         };
 
         // game music
@@ -17,6 +18,40 @@ class AudioManager {
         this.activeMusic = [];
         
     }
+    
+    /**
+     * This will play the audio (sound effect) of the given name.
+     * It will look through the registered sound effects and compare
+     * the audio paths with the given name; if they match (not case
+     * sensitive), it will attempt to play the sound if its readyState
+     * is equal to 4. If the method is looped, it will loop the audio
+     * file.
+     * 
+     * @param {string} name
+     * The name of the desired sound effect
+     */
+    playSound(name) {
+    	
+    	let baseSound = this.getAudioTrack(0, name); // To get the path from
+    	let soundOutput = new Audio(); // The audio that will actually be played
+    	soundOutput.src = baseSound.src;
+    	soundOutput.play();
+    	
+//    	if(baseSound.readyState == 4) {
+//    		soundOutput.play();
+//    		
+//    		// If the sound has ended, reset the playback cursor
+//    		// and play it again
+//    	} else if((baseSound.readyState == 2) && (baseSound.ended)) {
+//    		baseSound.pause();
+//    		baseSound.currentTime = 0;
+//    		baseSound.play();
+//    	} else {
+//    		console.log("Audio (" + name + ") was not ready to be played. Cannot play!");
+//    	}
+    	
+    }
+    
     
     /**
      * Plays the audio (music) of the given name. This method

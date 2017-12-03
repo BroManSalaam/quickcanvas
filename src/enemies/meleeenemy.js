@@ -2,6 +2,8 @@ class MeleeEnemy extends Enemy {
 
     constructor(x, y, spd) {
         super();
+        
+        this.hp = 100;
 
         this.spd = spd;
         this.velocity_spd = this.spd / 100;
@@ -16,14 +18,14 @@ class MeleeEnemy extends Enemy {
             position: [x, y],
             mass: 5,
             type: p2.Body.DYNAMIC,
-            angle: 0
+            angle: 0,
         });
 
         this.shape = new p2.Box({
-            width: 128,
-            height: 128,
+            width: 64,
+            height: 64,
             collisionGroup: Constants.groups.GROUP_ENEMY,
-            collisionMask: Constants.groups.GROUP_PLAYER | Constants.groups.GROUP_WALL
+            collisionMask: Constants.groups.GROUP_PLAYER | Constants.groups.GROUP_WALL | Constants.groups.GROUP_ENEMY | Constants.groups.GROUP_HOSTAGE | Constants.groups.GROUP_BULLET
         });
 
         this.body.addShape(this.shape);
@@ -82,13 +84,14 @@ class MeleeEnemy extends Enemy {
 
     draw() {
         Renderer.drawImage(mec_default.img, mec_default.spr_width * this.cf, this.getKeyFrame(), mec_default.spr_width, mec_default.spr_height,
-            this.x - this.width / 2, this.y - this.width / 2, this.width, this.width);
-    }
+            this.x, this.y, this.width, this.height);
 
+    }
+    
     drawBoundingBox() {
-        Renderer.drawShapeBoundingBox(this.shape, this.x, this.y, this.width, this.width);
+        Renderer.drawShapeBoundingBox(this.shape, this.centerX, this.centerY, this.width, this.height);
     }
-
+    
     get velocity() {
         return this.body.velocity;
     }
@@ -107,13 +110,27 @@ class MeleeEnemy extends Enemy {
     setY(y) {
         this.body.position[1] = y;
     }
-
+    
+    get centerX() {
+    	return this.x + (this.width / 2);
+    }
+    get centerY() {
+    	return this.y + (this.height / 2);
+    }
+    
     get width() {
         return this.shape.width;
     }
 
-    get width() {
+    get height() {
         return this.shape.height;
+    }
+    
+    get centerX() {
+    	return this.x + (this.width / 2);
+    }
+    get centerY() {
+    	return this.y + (this.height / 2);
     }
 
 }

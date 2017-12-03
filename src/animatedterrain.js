@@ -28,6 +28,6 @@ class AnimatedTerrain {
 
     draw() {
         Renderer.drawImage(MapKey[this.key].img, MapConstants.TILE_WIDTH * this.cf, 0, MapConstants.TILE_WIDTH, MapConstants.TILE_HEIGHT,
-            this.x - MapConstants.TILE_WIDTH / 2, this.y - MapConstants.TILE_HEIGHT / 2, MapConstants.TILE_WIDTH, MapConstants.TILE_HEIGHT);
+            this.x/* - MapConstants.TILE_WIDTH / 2*/, this.y/* - MapConstants.TILE_HEIGHT / 2*/, MapConstants.TILE_WIDTH, MapConstants.TILE_HEIGHT);
     }
 }

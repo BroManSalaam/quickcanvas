@@ -51,6 +51,7 @@ let Renderer = {
      * @param {*} h 
      */
     rect(x, y, w, h) {
+        ctx.strokeStyle = "#f00";
         ctx.strokeRect(x - Camera.x, y - Camera.y, w, h);
     },
 
@@ -92,9 +93,25 @@ let Renderer = {
      * same function as drawImage, just with an extra shape parameter right after img
      */
     drawBoxImage(img, box, sx, xy, sw, sh, dx, dy, dw, dh) {
-        ctx.drawImage(img, sx, xy, sw, sh, (dx - Camera.x - box.width / 2), (dy - Camera.y - box.height / 2), dw, dh);
+        ctx.drawImage(img, sx, xy, sw, sh, (dx - Camera.x), (dy - Camera.y ), dw, dh);
     },
-
+    
+    
+    drawRotateImage(img, box, sx, sy, sw, sh, dx, dy, dw, dh, degree) {
+    	
+    	// Center the context on the image and rotate
+    	//ctx.translate((dx - Camera.x - box.width / 2) + img.width / 2, (dy - Camera.y - box.height / 2) + img.height / 2);
+    	ctx.translate(440 - Camera.x, -440);
+    	ctx.rotate(degree * Math.PI / 180);
+    	// Draw the image
+    	ctx.drawImage(img, sx, xy, sw, sh, (dx - Camera.x - box.width / 2), (dy - Camera.y - box.height / 2), dw, dh);6
+    	// Then "un-rotate" for regular drawing again
+    	ctx.rotate(-degree * Math.PI / 180);
+    	ctx.translate(-440 + Camera.x, 440);
+    	//ctx.translate(-(dx - Camera.x - box.width / 2) - img.width / 2, -(dy - Camera.y - box.height / 2) - img.height / 2);
+    	
+    },
+    
     /**
      * 
      * @param {*} box 

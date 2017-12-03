@@ -20,14 +20,18 @@
     <script src="./src/constants.js"></script>
 
     <!-- enemies -->
-    <script src="./src/enemies/EnemyConstants.js"></script>
+    <script src="./src/enemies/enemyconstants.js"></script>
     <script src="./src/enemies/enemy.js"></script>
-    <script src="./src/enemies/MeleeEnemy.js"></script>
+    <script src="./src/enemies/meleeenemy.js"></script>
 
     <!-- player -->
     <script src="./src/player.js"></script>
+    
+    <!-- hostage -->
+    <script src="./src/hostage.js"></script>
 
     <!-- game engine-->
+    <script src="./src/projectile.js"></script>
     <script src="./src/util.js"></script>
     <script src="./src/audio.js"></script>
     <script src="./src/wall.js"></script>
@@ -47,7 +51,12 @@
 
 <body>
     <div>
-        <canvas id='main_canvas' style="z-index:1;">
+    
+		<canvas id='player_canvas' style="z-index:1;">
+            Your browser is old as dirt, pls update to get the canvas which is required to play our little game thingie :) https://www.google.com/chrome/browser/desktop/index.html
+        </canvas>
+        
+        <canvas id='main_canvas'style="z-index:0;">
             Your browser is old as dirt, pls update to get the canvas which is required to play our little game thingie :) https://www.google.com/chrome/browser/desktop/index.html
         </canvas>
     </div>

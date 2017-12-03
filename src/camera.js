@@ -13,7 +13,7 @@ let Camera = {
         Camera.x = x - Camera.xbias;
         Camera.y = y - Camera.ybias;
     },
-
+    
     translate: (xd, yd) => {
         Camera.x += xd;
         Camera.y += yd;

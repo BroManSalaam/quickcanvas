@@ -1,5 +1,5 @@
 function bindInputHandler() {
-
+	
     document.onkeydown = function (c) {
 
         if (c.keyCode == 37) {
@@ -14,6 +14,11 @@ function bindInputHandler() {
         if (c.keyCode == 40) {
             player.isDown = true;
         }
+        
+        if(c.keyCode == 69) { // 69!!!!
+        	player.shouldFollow = true;
+        }
+        
     }
 
     document.onkeyup = function (c) {
@@ -30,9 +35,14 @@ function bindInputHandler() {
         if (c.keyCode == 40) {
             player.isDown = false;
         }
+        
+        if(c.keyCode == 69) {
+        	player.shouldFollow = false;
+        }
     }
 }
 
 document.addEventListener('click', function(e) {
+	player.bullet_isAdded = false;
     game.setClick(e.pageX, e.pageY);
 }, true);

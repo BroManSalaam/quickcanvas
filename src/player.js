@@ -9,30 +9,31 @@ class Player {
     constructor(x, y, spd) {
 
         // position & animation
-        this.spr_width = 460.25;
-        this.spr_height = 592;
+        this.spr_width = 64;
+        this.spr_height = 64;
 
         this.cf = 3;
         // maxcf is the total number of animation frames a sheet has
-        this.maxcf = 4;
+        this.maxcf = 13;
 
         this.dt = 100;
         this.dt_max = 75;
         this.dt_count = 0;
 
         this.img = new Image();
-
+        
         this.isLeft = false;
         this.isRight = false;
         this.isDown = false;
         this.isUp = false;
+        this.shouldFollow = false; // Is the following key pressed?
 
         // the position on the spritesheet where each directional frame starts eg: the down walking animation may start at 0
-        this.leftY = 1184;
-        this.rightY = 592;
-        this.downY = 0;
-        this.upY = 1846;
-        this.previousY = 0;
+//        this.leftY = 1184;
+//        this.rightY = 592;
+//        this.downY = 0;
+//        this.upY = 1846;
+//        this.previousY = 0;
 
         // Physics
 
@@ -57,17 +58,25 @@ class Player {
             width: 64,
             height: 64,
             collisionGroup: Constants.GROUP_PLAYER,
-            collisionMask: Constants.groups.GROUP_ENEMY | Constants.groups.GROUP_WALL
+            collisionMask: Constants.groups.GROUP_WALL | Constants.groups.GROUP_ENEMY | Constants.groups.GROUP_HOSTAGE
         });
 
         this.body.addShape(this.shape);
+        
+        
+        // bullets
+        this.projectile = null;
+        this.bullet_spd = 700;
+        // if this.proj has already been added to the 
+        this.bullet_isAdded = true;
+        
     }
-
+    
     load() {
         return new Promise((resolve, reject) => {
 
             let start = Date.now();
-            this.img.src = "src/assets/spritesheets/SpriteSheet.png";
+            this.img.src = "src/assets/spritesheets/player.png";
 
             this.img.onload = () => {
                 resolve(Date.now() - start);
@@ -81,23 +90,25 @@ class Player {
     // get what direction the player is in translated to what direction its pointing to on the sprite sheet
     getKeyFrame() {
 
-        if (this.isLeft) {
-            this.previousY = this.leftY;
-            return this.leftY;
-        }
-        if (this.isRight) {
-            this.previousY = this.rightY;
-            return this.rightY;
-        }
-        if (this.isUp) {
-            this.previousY = this.upY;
-            return this.upY;
-        }
-        if (this.isDown) {
-            this.previousY = this.downY;
-            return this.downY;
-        }
-        return this.previousY;
+//        if (this.isLeft) {
+//            this.previousY = this.leftY;
+//            return this.leftY;
+//        }
+//        if (this.isRight) {
+//            this.previousY = this.rightY;
+//            return this.rightY;
+//        }
+//        if (this.isUp) {
+//            this.previousY = this.upY;
+//            return this.upY;
+//        }
+//        if (this.isDown) {
+//            this.previousY = this.downY;
+//            return this.downY;
+//        }
+//        return this.previousY;
+    	
+    	return 0;
     }
 
     update(dt) {
@@ -162,17 +173,34 @@ class Player {
         if (!this.isUp && this.body.velocity[1] < 0) {
             this.body.velocity[1] /= this.velocity_decay;
         }
+        
+        if(this.shotCooldown > 0) {
+        	this.shotCooldown--;
+        } else {
+        	this.shotCooldown = 0;
+        }
+        
     }
 
     draw() {
-        Renderer.drawBoxImage(this.img, this.shape, this.spr_width * this.cf, this.getKeyFrame(), this.spr_width, this.spr_height,
-            this.x, this.y, this.getWidth(), this.getHeight());
+        ctx_player.drawImage(this.img, this.spr_width * this.cf, this.getKeyFrame(), this.spr_width, this.spr_height,
+                this.x - Camera.x, this.y - Camera.y, this.getWidth(), this.getHeight());
     }
-
+    
     drawBoundingBox() {
-        Renderer.drawShapeBoundingBox(this.shape, this.x, this.y, this.getWidth(), this.getHeight());
+        Renderer.drawShapeBoundingBox(ctx, this.shape, this.centerX, this.centerY, this.getWidth(), this.getHeight());
     }
-
+    
+    /** 
+     * shoot at a given x and y coordinate
+     */
+    shoot(x, y) {
+    	this.projectile = new Projectile(x, y, this.bullet_spd);
+    	audio.playSound("shot");
+    	
+    }
+    
+    
     get velocity() {
         return this.body.velocity;
     }
@@ -200,7 +228,21 @@ class Player {
     setY(y) {
         this.body.position[1] = y;
     }
-
+    
+    get centerX() {
+    	return this.x + (this.width / 2);
+    }
+    get centerY() {
+    	return this.y + (this.height / 2);
+    }
+    
+    get width() {
+    	return this.shape.width;
+    }
+    get height() {
+    	return this.shape.height;
+    }
+    
     getWidth() {
         return this.shape.width;
     }

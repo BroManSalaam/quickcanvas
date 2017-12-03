@@ -15,7 +15,7 @@ class AssetManager {
             let assets = [];
             assets[0] = mec_default.load();
             assets[1] = player.load();
-    
+            
             // images that correspond to a number in key_type
             let key_src = [
                 '', // reserved: empty tile

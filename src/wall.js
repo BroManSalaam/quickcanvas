@@ -14,7 +14,7 @@ class Wall {
             width: w,
             height: h,
             collisionGroup: Constants.groups.GROUP_WALL,
-            collisionMask: Constants.groups.GROUP_ENEMY | Constants.groups.GROUP_PLAYER
+            collisionMask: Constants.groups.GROUP_PLAYER | Constants.groups.GROUP_ENEMY | Constants.groups.GROUP_HOSTAGE | Constants.groups.GROUP_BULLET
         });
 
         this.body.addShape(this.shape);
@@ -43,7 +43,14 @@ class Wall {
     setY(y) {
         this.body.position[1] = y;
     }
-
+    
+    get centerX() {
+    	return this.x + (this.width / 2);
+    }
+    get centerY() {
+    	return this.y + (this.height / 2);
+    }
+    
     get height() {
         return this.shape.width;
     }

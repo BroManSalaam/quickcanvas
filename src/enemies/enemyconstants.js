@@ -14,6 +14,8 @@ class MeleeEnemyConstants {
         this.rightY = 192;
         this.upY = 0;
         this.downY = 128;
+        
+        this.atk = 5;
 
         this.spr_width = 64;
         this.spr_height = 64;
