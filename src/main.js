@@ -10,7 +10,7 @@ let player;
 let game;
 let audio;
 
-$(document).ready(function () {
+window.onload = function () {
     canvas = document.getElementById('main_canvas');
     ctx = document.getElementById('main_canvas').getContext('2d');
     
@@ -35,10 +35,10 @@ $(document).ready(function () {
 
     //Camera.zoom(.5);
 
-    player = new Player(10, 0, 10.5);
+    player = new Player(10, 0, 50.5);
 
     game.start();
-});
+};
 
 
 

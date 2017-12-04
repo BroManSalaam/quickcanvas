@@ -4,6 +4,13 @@ class Key {
         this.img = new Image();
     }
 
+    /**
+     * return a new promise that resolves the given image also passing back a load time
+     * load also sets the this.type and this.src members
+     * 
+     * @param {String} src 
+     * @param {Number} type 
+     */
     load(src, type) {
 
         let start = Date.now();

@@ -47,7 +47,7 @@ class Game {
         		// At this point, we know objA is the bullet
         		
         		if(objB.collisionGroup == Constants.groups.GROUP_ENEMY) {
-        			console.log(this.enemy_melee);
+        			// console.log(this.enemy_melee);
         			for(let i = 0; i < this.enemy_melee.length; i++) {
         				if(this.enemy_melee[i].body.id == objA.id) {
         					this.enemy_melee[i].hp -= player.atk;
@@ -88,7 +88,7 @@ class Game {
         this.dt = Date.now(); // Starting values
         this.render_previous = Date.now();
         
-        ctx_player.rotate(12*Math.PI/180);
+        //ctx_player.rotate(12*Math.PI/180);
         //ctx_player.translate(-this.screen_width / 4, -this.screen_height / 4);
     }
 
@@ -302,10 +302,10 @@ class Game {
 
         // original map that will be converted to terrain and walls though the map generator
         let mapLayout = [
-            [3, 3, 3, 3, 3, 3, 3, 3],
-            [3, 2, 2, 2, 2, 4, 2, 3],
-            [3, 2, 4, 2, 2, 2, 2, 2],
-            [3, 2, 2, 2, 1, 2, 2, 2],
+            [1, 2, 2, 2, 3, 3, 3, 3],
+            [1, 2, 2, 4, 2, 4, 2, 3],
+            [1, 20, 4, 5, 2, 2, 2, 2],
+            [3, 2, 2, 6, 1, 2, 2, 2],
             [2, 2, 2, 2, 2, 2, 2, 3],
             [2, 2, 4, 2, 2, 2, 4, 3],
             [3, 3, 3, 3, 3, 2, 2, 3]
@@ -318,6 +318,8 @@ class Game {
         ];
 
         this.map = MapGenerator.generate(mapLayout);
+
+        console.log(this.map);
     }
 
     setClick(x, y) {

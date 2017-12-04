@@ -15,23 +15,29 @@ class AssetManager {
             let assets = [];
             assets[0] = mec_default.load();
             assets[1] = player.load();
-            
+
             // images that correspond to a number in key_type
             let key_src = [
                 '', // reserved: empty tile
-                'src/assets/map/grass.png', // reserved: spawn point
+                'src/assets/map/spawn.png',
+                'src/assets/map/asphalt1.png',
+                'src/assets/map/asphalt2.png',
+                'src/assets/map/concrete.png',
                 'src/assets/map/grass.png',
-                'src/assets/map/wall.png',
-                'src/assets/map/animated.png'
+                'src/assets/map/hutwall.png',
+                'src/assets/map/safezone.png'
             ];
-    
+
             // define type of tile based on key given
             let key_type = [
-                KeyConstants.EMPTY, // reserved: empty tile
-                KeyConstants.SPAWN, // reserved: spawn point
-                KeyConstants.TERRAIN,
-                KeyConstants.WALL,
-                KeyConstants.ANIMATED
+                KeyConstants.types.EMPTY,
+                KeyConstants.types.SPAWN,
+                KeyConstants.types.ASPHALT,
+                KeyConstants.types.ASPHALT2,
+                KeyConstants.types.CONCRETE,
+                KeyConstants.types.GRASS,
+                KeyConstants.types.HUTWALL,
+                KeyConstants.types.SAFEZONE
             ];
 
             /*
@@ -40,22 +46,26 @@ class AssetManager {
 
             the key will also determine certain attributes
             */
-    
+
+            if(key_src.length != key_type.length) {
+                throw new Error('key_src and key_type are not the same size!');
+            }
+
             for (let i = 0; i < key_src.length; i++) {
                 MapKey[i] = new Key();
-                assets[i+2] = MapKey[i].load(key_src[i], key_type[i]);
+                assets[assets.length+i] = MapKey[i].load(key_src[i], key_type[i]);
             }
 
             Promise.all(assets).then((times) => {
-                times = times.filter(function( element ) {
+                times = times.filter(function (element) {
                     return element !== undefined;
-                 });
+                });
                 console.log('loaded assets: ' + times.reduce((a, b) => a + b, 0) + ' ms');
                 this.isLoaded = true;
             }).catch((err) => {
                 console.log('an error occured while trying to load assets');
                 assets.forEach(asset => {
-                    if(asset.state != 'fullfilled') {
+                    if (asset.state != 'fullfilled') {
                         console.log(JSON.stringify(asset, null, ' ') + ' has not been fullfilled');
                     }
                 });

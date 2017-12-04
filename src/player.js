@@ -21,19 +21,21 @@ class Player {
         this.dt_count = 0;
 
         this.img = new Image();
-        
+
         this.isLeft = false;
         this.isRight = false;
         this.isDown = false;
         this.isUp = false;
         this.shouldFollow = false; // Is the following key pressed?
 
+        this.rotation = 0;
+
         // the position on the spritesheet where each directional frame starts eg: the down walking animation may start at 0
-//        this.leftY = 1184;
-//        this.rightY = 592;
-//        this.downY = 0;
-//        this.upY = 1846;
-//        this.previousY = 0;
+        //        this.leftY = 1184;
+        //        this.rightY = 592;
+        //        this.downY = 0;
+        //        this.upY = 1846;
+        //        this.previousY = 0;
 
         // Physics
 
@@ -62,16 +64,16 @@ class Player {
         });
 
         this.body.addShape(this.shape);
-        
-        
+
+
         // bullets
         this.projectile = null;
         this.bullet_spd = 700;
         // if this.proj has already been added to the 
         this.bullet_isAdded = true;
-        
+
     }
-    
+
     load() {
         return new Promise((resolve, reject) => {
 
@@ -90,25 +92,25 @@ class Player {
     // get what direction the player is in translated to what direction its pointing to on the sprite sheet
     getKeyFrame() {
 
-//        if (this.isLeft) {
-//            this.previousY = this.leftY;
-//            return this.leftY;
-//        }
-//        if (this.isRight) {
-//            this.previousY = this.rightY;
-//            return this.rightY;
-//        }
-//        if (this.isUp) {
-//            this.previousY = this.upY;
-//            return this.upY;
-//        }
-//        if (this.isDown) {
-//            this.previousY = this.downY;
-//            return this.downY;
-//        }
-//        return this.previousY;
-    	
-    	return 0;
+        //        if (this.isLeft) {
+        //            this.previousY = this.leftY;
+        //            return this.leftY;
+        //        }
+        //        if (this.isRight) {
+        //            this.previousY = this.rightY;
+        //            return this.rightY;
+        //        }
+        //        if (this.isUp) {
+        //            this.previousY = this.upY;
+        //            return this.upY;
+        //        }
+        //        if (this.isDown) {
+        //            this.previousY = this.downY;
+        //            return this.downY;
+        //        }
+        //        return this.previousY;
+
+        return 0;
     }
 
     update(dt) {
@@ -116,9 +118,9 @@ class Player {
         //let velocity_average = (Math.abs(this.body.velocity[0]) + Math.abs(this.body.velocity[1])) > 1 ? (Math.abs(this.body.velocity[0]) + Math.abs(this.body.velocity[1])) : 1;
         //this.dt = 250 / velocity_average < this.dt_max ? this.dt_max : 300 / velocity_average;
 
-        this.dt_count = (dt || 1/60) + (this.dt_count || 0);
+        this.dt_count = (dt || 1 / 60) + (this.dt_count || 0);
         // if we've passed our delta time, reset the counter and keep going
-        if(this.dt_count >= this.dt) {
+        if (this.dt_count >= this.dt) {
             this.cf++;
             this.dt_count = 0;
         }
@@ -132,7 +134,7 @@ class Player {
         // if left and not over max velocity
         if (this.isLeft && Math.abs(this.body.velocity[0]) < this.velocity_max) {
 
-            if(this.velocity[0] > -this.velocity_start) {
+            if (this.velocity[0] > -this.velocity_start) {
                 this.setXVelocity(-this.velocity_start);
             }
             this.body.velocity[0] -= this.velocity_spd;
@@ -143,7 +145,7 @@ class Player {
 
         if (this.isRight && this.body.velocity[0] < this.velocity_max) {
 
-            if(this.velocity[0] < this.velocity_start) {
+            if (this.velocity[0] < this.velocity_start) {
                 this.setXVelocity(this.velocity_start);
             }
 
@@ -154,7 +156,7 @@ class Player {
         }
 
         if (this.isDown && this.body.velocity[1] < this.velocity_max) {
-            if(this.velocity[1] < this.velocity_start) {
+            if (this.velocity[1] < this.velocity_start) {
                 this.setYVelocity(this.velocity_start);
             }
 
@@ -165,7 +167,7 @@ class Player {
         }
 
         if (this.isUp && Math.abs(this.body.velocity[1]) < this.velocity_max) {
-            if(this.velocity[1] > -this.velocity_start) {
+            if (this.velocity[1] > -this.velocity_start) {
                 this.setYVelocity(-this.velocity_start);
             }
             this.body.velocity[1] -= this.velocity_spd;
@@ -173,34 +175,53 @@ class Player {
         if (!this.isUp && this.body.velocity[1] < 0) {
             this.body.velocity[1] /= this.velocity_decay;
         }
-        
-        if(this.shotCooldown > 0) {
-        	this.shotCooldown--;
+
+        if (this.shotCooldown > 0) {
+            this.shotCooldown--;
         } else {
-        	this.shotCooldown = 0;
+            this.shotCooldown = 0;
         }
-        
+
     }
 
     draw() {
+
+        if (this.rotation != 0) {
+            ctx_player.translate(game.screen_width / 2, game.screen_height / 2);
+
+            // Rotate 1 degree
+            ctx_player.rotate(50 * Math.PI / 180);
+
+            // Move registration point back to the top left corner of canvas
+            ctx_player.translate(-game.screen_width / 2, -game.screen_height / 2);
+        }
+
+
+        // french flag lol
+        // ctx_player.fillStyle = "red";
+        // ctx_player.fillRect(game.screen_width / 4, game.screen_width / 4, game.screen_width / 2, game.screen_height / 4);
+        // ctx_player.fillStyle = "blue";
+        // ctx_player.fillRect(game.screen_width / 4, game.screen_width / 2, game.screen_width / 2, game.screen_height / 4);
+
         ctx_player.drawImage(this.img, this.spr_width * this.cf, this.getKeyFrame(), this.spr_width, this.spr_height,
-                this.x - Camera.x, this.y - Camera.y, this.getWidth(), this.getHeight());
+            this.x - Camera.x, this.y - Camera.y, this.getWidth(), this.getHeight());
+
     }
-    
+
     drawBoundingBox() {
         Renderer.drawShapeBoundingBox(ctx, this.shape, this.centerX, this.centerY, this.getWidth(), this.getHeight());
     }
-    
+
     /** 
      * shoot at a given x and y coordinate
      */
     shoot(x, y) {
-    	this.projectile = new Projectile(x, y, this.bullet_spd);
-    	audio.playSound("shot");
-    	
+        this.projectile = new Projectile(x, y, this.bullet_spd);
+        audio.playSound("shot");
+
     }
-    
-    
+
+
     get velocity() {
         return this.body.velocity;
     }
@@ -228,21 +249,21 @@ class Player {
     setY(y) {
         this.body.position[1] = y;
     }
-    
+
     get centerX() {
-    	return this.x + (this.width / 2);
+        return this.x + (this.width / 2);
     }
     get centerY() {
-    	return this.y + (this.height / 2);
+        return this.y + (this.height / 2);
     }
-    
+
     get width() {
-    	return this.shape.width;
+        return this.shape.width;
     }
     get height() {
-    	return this.shape.height;
+        return this.shape.height;
     }
-    
+
     getWidth() {
         return this.shape.width;
     }
