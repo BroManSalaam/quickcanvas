@@ -4,23 +4,61 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
-    <title>JS Bin</title>
+    <title>LudumDare Game</title>
 
     <link rel="stylesheet" type="text/css" href="./src/assets/css/style.css">
 
     <!-- libraries-->
     <script src="./lib/p2.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
+    <script src="./lib/jquery-3.2.1.slim.min.js"></script>
 
-    <!-- babel bundle -->
-    <script src="build/main.bundle.min.js"></script>
+    <!-- setup -->
+    <script src="./src/setup.js"></script>
 
+    <!-- constants -->
+    <script src="./src/constants.js"></script>
+
+    <!-- enemies -->
+    <script src="./src/enemies/enemyconstants.js"></script>
+    <script src="./src/enemies/enemy.js"></script>
+    <script src="./src/enemies/meleeenemy.js"></script>
+
+    <!-- player -->
+    <script src="./src/player.js"></script>
     
+    <!-- hostage -->
+    <script src="./src/hostage.js"></script>
 
+    <!-- game engine-->
+    <script src="./src/projectile.js"></script>
+    <script src="./src/util.js"></script>
+    <script src="./src/audio.js"></script>
+    <script src="./src/wall.js"></script>
+    <script src="./src/terrain.js"></script>
+    <script src="./src/animatedterrain.js"></script>
+    <script src="./src/mapgenerator.js"></script>
+    <script src="./src/key.js"></script>
+    <script src="./src/camera.js"></script>
+    <script src="./src/renderer.js"></script>
+    <script src="./src/assetmanager.js"></script>
+    <script src="./src/ui.js"></script>
+
+    <script src="./src/game.js"></script>
+    <script src="./src/input.js"></script>
+    <script src="./src/main.js"></script>
 </head>
 
 <body>
-    <canvas id='main_canvas'></canvas>
+    <div>
+    
+		<canvas id='player_canvas' style="z-index:1;">
+            Your browser is old as dirt, pls update to get the canvas which is required to play our little game thingie :) https://www.google.com/chrome/browser/desktop/index.html
+        </canvas>
+        
+        <canvas id='main_canvas'style="z-index:0;">
+            Your browser is old as dirt, pls update to get the canvas which is required to play our little game thingie :) https://www.google.com/chrome/browser/desktop/index.html
+        </canvas>
+    </div>
 </body>
 
 </html>
