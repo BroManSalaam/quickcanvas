@@ -58,5 +58,3 @@ KeyConstants.terrain = [
 KeyConstants.animatedterrain = {
 
 }
-
-console.log(KeyConstants.terrain);

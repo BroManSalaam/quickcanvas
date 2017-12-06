@@ -1,11 +1,13 @@
 class MapGenerator {
 
     /**
+     * populate and return a new array of map tiles given a 3d array of integer values
      * 
-     * @param {*} mapLayout 
-     * @param {*} isChunked 
+     * if you plan on checking for image width and height values for assertion you must wait until all images are loaded
+     * 
+     * @param {Array} mapLayout 
      */
-    static generate(mapLayout, isChunked) {
+    static generate(mapLayout) {
 
         // create a copy of mapLayout to be filled with newly generated terrain
         let map = [mapLayout.length];
@@ -19,15 +21,30 @@ class MapGenerator {
             for (let c = 0; c < mapLayout[r].length; c++) {
 
                 try {
+
                     if (MapKey[mapLayout[r][c]] === undefined) {
-                        //throw new Error(`mapLayout[${r}][${c}] is undefined`);
                         continue;
                     }
-                    if (mapLayout[r][c] > Object.keys(MapConstants.types).length - 1) {
+
+                    /////////////////////////////////////////////////////////////////////
+                    // DEBUG/ASSERTION - remove for final deployment for performance boost if needed
+                    /////////////////////////////////////////////////////////////////////
+
+                    // make sure that the number provided in the layout is in range of accepted values
+                    if (mapLayout[r][c] > KeyConstants.types.length - 1 || mapLayout[r][c] < 0) {
                         throw new Error(`A tile key type is out of range of the accepted values
 accepted: 0-${MapConstants.length - 1}  recieved: MapKey[${r}][${c}] ${MapKey[r][c]}`);
                     }
 
+                    // check to make sure img w/h are same as tile size
+                    if(MapKey[mapLayout[r][c]].img.width != MapConstants.TILE_WIDTH || MapKey[mapLayout[r][c]].img.height != MapConstants.TILE_HEIGHT) {
+                        throw new Error(`width: ${MapKey[mapLayout[r][c]].img.width} height: ${MapKey[mapLayout[r][c]].img.height}
+width and height are not the same as defined map tile geometry constants: ${MapConstants.TILE_WIDTH} x ${MapConstants.TILE_HEIGHT}`);
+                    }
+
+                    /////////////////////////////////////////////////////////////////////
+
+                    // skip tiles specified as empty
                     if (MapKey[mapLayout[r][c]].type == KeyConstants.types.EMPTY) {
                         continue;
                     }
@@ -56,7 +73,7 @@ accepted: 0-${MapConstants.length - 1}  recieved: MapKey[${r}][${c}] ${MapKey[r]
                     //     c * MapConstants.TILE_WIDTH + MapConstants.x, r * MapConstants.TILE_HEIGHT + MapConstants.y);
 
                 } catch (err) {
-                    console.log('error while generating map at row:' + r + ' col: ' + c);
+                    console.log('error while generating map at row: ' + r + ' col: ' + c);
                     console.log(err);
                 }
             }

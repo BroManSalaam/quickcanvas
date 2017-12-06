@@ -51,6 +51,8 @@ class AssetManager {
                 throw new Error('key_src and key_type are not the same size!');
             }
 
+            // return a new promise that resolves the given image also passing back a load time
+            // load also sets the this.type and this.src members
             for (let i = 0; i < key_src.length; i++) {
                 MapKey[i] = new Key();
                 assets[assets.length+i] = MapKey[i].load(key_src[i], key_type[i]);

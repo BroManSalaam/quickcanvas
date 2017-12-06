@@ -82,14 +82,9 @@ class Game {
 
     init() {
         this.assetmanager.loadAssets();
-        this.generateMap();
-        this.addBodies();
         
         this.dt = Date.now(); // Starting values
         this.render_previous = Date.now();
-        
-        //ctx_player.rotate(12*Math.PI/180);
-        //ctx_player.translate(-this.screen_width / 4, -this.screen_height / 4);
     }
 
     start() {
@@ -102,6 +97,8 @@ class Game {
                 this.isPlaying = true;
                 clearInterval(this.load);
 
+                this.generateMap();
+                this.addBodies();
                 bindInputHandler();
 
                 this.currentstate = this.states.PLAYING;
@@ -289,23 +286,12 @@ class Game {
 
     generateMap() {
 
-        /*
-        Key constants for referance
-
-        let KeyConstants = {
-            EMPTY : 0,
-            SPAWN : 1,
-            TERRAIN : 2,
-            WALL : 3
-        };
-        */
-
         // original map that will be converted to terrain and walls though the map generator
         let mapLayout = [
             [1, 2, 2, 2, 3, 3, 3, 3],
             [1, 2, 2, 4, 2, 4, 2, 3],
             [1, 20, 4, 5, 2, 2, 2, 2],
-            [3, 2, 2, 6, 1, 2, 2, 2],
+            [3, 2, 2, 6, 1, 2, 2, 2, 2],
             [2, 2, 2, 2, 2, 2, 2, 3],
             [2, 2, 4, 2, 2, 2, 4, 3],
             [3, 3, 3, 3, 3, 2, 2, 3]
