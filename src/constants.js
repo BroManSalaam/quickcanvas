@@ -9,7 +9,7 @@ let Constants = {
     },
 
     bullet: {
-        SPEED_MINIMUM: 50,
+        SPEED_MINIMUM: 5,
         FINISH_RADIUS: 24
     },
 

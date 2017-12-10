@@ -1,4 +1,3 @@
-
 /**
  * all entities prepended with spr_ are purely for textual purposes and have no correlation to the rendered version of the game
  * 
@@ -28,8 +27,6 @@ class Player {
         this.isUp = false;
         this.shouldFollow = false; // Is the following key pressed?
 
-        this.rotation = 0;
-
         // the position on the spritesheet where each directional frame starts eg: the down walking animation may start at 0
         //        this.leftY = 1184;
         //        this.rightY = 592;
@@ -37,8 +34,10 @@ class Player {
         //        this.upY = 1846;
         //        this.previousY = 0;
 
-        // Physics
-
+        // Physics & game stats
+    
+        this.hp = 100;
+        this.atk = 50;
         this.spd = spd;
         this.velocity_spd = 3.3;
         // starting velocity after direction change
@@ -68,9 +67,22 @@ class Player {
 
         // bullets
         this.projectile = null;
-        this.bullet_spd = 700;
+        this.bullet_spd = 650;
         // if this.proj has already been added to the 
         this.bullet_isAdded = true;
+
+        // rotation
+
+        this.rotation = 0;
+        this.rotation_added = 0;
+        // 0 degrees is to the right of the image, use this to correct that
+        this.rotation_offset = 90;
+        this.mouseX = null;
+        this.mouseY = null;
+
+        // where the player actually is on the screen
+        this.absoluteX = game.screen_width / 2 + (this.width / 2);
+        this.absoluteY = game.screen_height / 2 + (this.height / 2);
 
     }
 
@@ -113,10 +125,12 @@ class Player {
         return 0;
     }
 
-    update(dt) {
+    update(dt, clickX, clickY) {
         // scaling dt with velocity
         //let velocity_average = (Math.abs(this.body.velocity[0]) + Math.abs(this.body.velocity[1])) > 1 ? (Math.abs(this.body.velocity[0]) + Math.abs(this.body.velocity[1])) : 1;
         //this.dt = 250 / velocity_average < this.dt_max ? this.dt_max : 300 / velocity_average;
+
+
 
         this.dt_count = (dt || 1 / 60) + (this.dt_count || 0);
         // if we've passed our delta time, reset the counter and keep going
@@ -186,26 +200,53 @@ class Player {
 
     draw() {
 
-        if (this.rotation != 0) {
+        // if rotation has changed, so if the user holds their mouse in one spot, it doesn't keep added the same rotational value
+        if (this.rotation_added !== 0) {
             ctx_player.translate(game.screen_width / 2, game.screen_height / 2);
 
-            // Rotate 1 degree
-            ctx_player.rotate(50 * Math.PI / 180);
+            ctx_player.rotate(this.rotation_added * (Math.PI  / 180));
 
             // Move registration point back to the top left corner of canvas
             ctx_player.translate(-game.screen_width / 2, -game.screen_height / 2);
+
+            this.rotation_added = 0;
         }
-
-
-        // french flag lol
-        // ctx_player.fillStyle = "red";
-        // ctx_player.fillRect(game.screen_width / 4, game.screen_width / 4, game.screen_width / 2, game.screen_height / 4);
-        // ctx_player.fillStyle = "blue";
-        // ctx_player.fillRect(game.screen_width / 4, game.screen_width / 2, game.screen_width / 2, game.screen_height / 4);
 
         ctx_player.drawImage(this.img, this.spr_width * this.cf, this.getKeyFrame(), this.spr_width, this.spr_height,
             this.x - Camera.x, this.y - Camera.y, this.getWidth(), this.getHeight());
+    }
 
+    rotate(rot) {
+
+        // if we cross ogre 360, reset the rotation to 0 plus the overflow 
+        if (this.rotation + rot > 360) {
+            //this.setRotation(0 + (this.rotation - (this.rotation + rot)));
+            this.rotation = 0 + (this.rotation - (this.rotation + rot));
+
+            //  going under 0, we set to 360 + how far we went under
+        } else if (this.rotation + rot < 0) {
+            //this.setRotation(360 + (this.rotation - rot));
+            this.rotation = 360 + (this.rotation - rot);
+        }
+
+        this.rotation_added = rot;
+    }
+
+    /**
+     * x1 : old mouseX position
+     * x2 : new mouseX position same with Y values
+     */
+    rotateToMouse(x2, y2) {
+
+        // if the mouse hasn't moved
+        if (this.mouseX == x2 && this.mouseY == y2) {
+            return;
+        } else {
+            let angle = angle360(this.absoluteX, this.absoluteY, x2, y2) + this.rotation_offset;
+            
+            // fix this https://stackoverflow.com/a/39574258
+            this.setRotation(angle);
+        }
     }
 
     drawBoundingBox() {
@@ -215,8 +256,8 @@ class Player {
     /** 
      * shoot at a given x and y coordinate
      */
-    shoot(x, y) {
-        this.projectile = new Projectile(x, y, this.bullet_spd);
+    shoot() {
+        this.projectile = new Projectile(this.bullet_spd);
         audio.playSound("shot");
 
     }
@@ -262,6 +303,11 @@ class Player {
     }
     get height() {
         return this.shape.height;
+    }
+
+    setRotation(rotation) {
+        this.rotation_added = rotation - this.rotation;
+        this.rotation = rotation;
     }
 
     getWidth() {

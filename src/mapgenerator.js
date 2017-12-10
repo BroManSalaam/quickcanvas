@@ -31,16 +31,16 @@ class MapGenerator {
                     /////////////////////////////////////////////////////////////////////
 
                     // make sure that the number provided in the layout is in range of accepted values
-                    if (mapLayout[r][c] > KeyConstants.types.length - 1 || mapLayout[r][c] < 0) {
-                        throw new Error(`A tile key type is out of range of the accepted values
-accepted: 0-${MapConstants.length - 1}  recieved: MapKey[${r}][${c}] ${MapKey[r][c]}`);
-                    }
+//                     if (mapLayout[r][c] > KeyConstants.types.length - 1 || mapLayout[r][c] < 0) {
+//                         throw new Error(`A tile key type is out of range of the accepted values
+// accepted: 0-${MapConstants.length - 1}  recieved: MapKey[${r}][${c}] ${MapKey[r][c]}`);
+//                     }
 
-                    // check to make sure img w/h are same as tile size
-                    if(MapKey[mapLayout[r][c]].img.width != MapConstants.TILE_WIDTH || MapKey[mapLayout[r][c]].img.height != MapConstants.TILE_HEIGHT) {
-                        throw new Error(`width: ${MapKey[mapLayout[r][c]].img.width} height: ${MapKey[mapLayout[r][c]].img.height}
-width and height are not the same as defined map tile geometry constants: ${MapConstants.TILE_WIDTH} x ${MapConstants.TILE_HEIGHT}`);
-                    }
+//                     // check to make sure img w/h are same as tile size
+//                     if(MapKey[mapLayout[r][c]].img.width != MapConstants.TILE_WIDTH || MapKey[mapLayout[r][c]].img.height != MapConstants.TILE_HEIGHT) {
+//                         throw new Error(`width: ${MapKey[mapLayout[r][c]].img.width} height: ${MapKey[mapLayout[r][c]].img.height}
+// width and height are not the same as defined map tile geometry constants: ${MapConstants.TILE_WIDTH} x ${MapConstants.TILE_HEIGHT}`);
+//                     }
 
                     /////////////////////////////////////////////////////////////////////
 

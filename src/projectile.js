@@ -1,118 +1,96 @@
-/**
- * http://usejsdoc.org/
- */
-
 
 class Projectile {
-	
-	constructor(x, y, spd) {
-		
-		// The destination coordinates
-		this.dx = x + Camera.x;
-		this.dy = y + Camera.y;
-				
+
+	constructor(spd) {
+
 		this.finished = false;
-		
+
 		this.spd = spd;
 		
-        this.body = new p2.Body({
-            position: [player.x, player.y],
-            mass: 10,
-            type: p2.Body.DYNAMIC,
-            velocity: [1233, 1233],
-        });
-        
-        this.shape = new p2.Box({
-            width: 24,
-            height: 24,
-            collisionGroup: Constants.groups.GROUP_BULLET,
-            collisionMask: Constants.groups.GROUP_WALL | Constants.groups.GROUP_ENEMY | Constants.groups.GROUP_HOSTAGE
-        });
+		let angle = player.rotation;
 
-        this.body.addShape(this.shape);
+		this.body = new p2.Body({
+			position: [player.x + Math.cos(angle) + 24, player.y + Math.sin(angle) + 24],
+			mass: 10,
+			type: p2.Body.DYNAMIC,
+			velocity: [ // initial velocity in ship direction
+				this.spd * Math.cos((angle - 90) * (Math.PI / 180)) + player.velocity[0],
+				this.spd * Math.sin((angle - 90) * (Math.PI / 180)) + player.velocity[1]
+			],
+		});
+		
+		//console.log(Math.cos(player.rotation));
+
+		this.shape = new p2.Box({
+			width: 24,
+			height: 24,
+			collisionGroup: Constants.groups.GROUP_BULLET,
+			collisionMask: Constants.groups.GROUP_WALL | Constants.groups.GROUP_ENEMY | Constants.groups.GROUP_HOSTAGE
+		});
+
+		this.body.addShape(this.shape);
 	}
-	
+
 	update() {
 		// we reach our destination
-		// TODO: thissss
-		if(this.x < this.dx + Constants.bullet.FINISH_RADIUS && this.x > this.dx - Constants.bullet.FINISH_RADIUS &&
-				this.y < this.dy + Constants.bullet.FINISH_RADIUS && this.y > this.dy - Constants.bullet.FINISH_RADIUS) {
+		if (this.x > player.x + game.screen_width / 2 || this.x < player.x - game.screen_width / 2 || this.y > player.y + game.screen_height || this.y < player.y - game.screen_height) {
 			this.finished = true;
-			//console.log("bullet expire - destination");
 		}
-		
-		if(Math.abs(this.velocity[0]) < Constants.bullet.SPEED_MINIMUM || Math.abs(this.velocity[1]) < Constants.bullet.SPEED_MINIMUM) {
-			this.finished = true;
-			//console.log("bullet expire - velocity");
-		}
-		
-		if(this.x < this.dx) {
-			this.setXVelocity(this.spd);
-		} 
-		if(this.y < this.dy) {
-			this.setYVelocity(this.spd);
-		} 
-		if(this.x > this.dx) {
-			this.setXVelocity(-this.spd);
-		} 
-		if(this.y > this.dy) {
-			this.setYVelocity(-this.spd);
-		}
-		
 	}
-	
+
 	draw() {
-        //Renderer.drawShapeBoundingBox(this.shape, this.x + Camera.x, this.y + Camera.y, this.width, this.height);
-        Renderer.drawShapeBoundingBox(this.shape, this.x + 32, this.y + 32, this.width, this.height);
+		//Renderer.drawShapeBoundingBox(this.shape, this.x + Camera.x, this.y + Camera.y, this.width, this.height);
+		ctx.fillStyle = "#FFFF00";
+		Renderer.fillRect(this.x, this.y, this.width, this.height);
 	}
-	
+
 	get x() {
 		return this.body.position[0];
 	}
-	
-    get y() {
-        return this.body.position[1];
-    }
 
-    setX(x) {
-        this.body.position[0] = x;
-    }
+	get y() {
+		return this.body.position[1];
+	}
 
-    setY(y) {
-        this.body.position[1] = y;
-    }
-    
-    get centerX() {
-    	return this.x + (this.width / 2);
-    }
-    get centerY() {
-    	return this.y + (this.height / 2);
-    }
-    
-    get width() {
-        return this.shape.width;
-    }
+	setX(x) {
+		this.body.position[0] = x;
+	}
 
-    get height() {
-        return this.shape.height;
-    }
+	setY(y) {
+		this.body.position[1] = y;
+	}
 
-    setWidth(w) {
-        this.shape.width = w;
-    }
-    setHeight(h) {
-        this.shape.height = h;
-    }
-    
-    get velocity() {
-        return this.body.velocity;
-    }
+	get centerX() {
+		return this.x + (this.width / 2);
+	}
+	get centerY() {
+		return this.y + (this.height / 2);
+	}
 
-    setYVelocity(v) {
-        this.velocity[1] = v;
-    }
+	get width() {
+		return this.shape.width;
+	}
 
-    setXVelocity(v) {
-        this.velocity[0] = v;
-    }
+	get height() {
+		return this.shape.height;
+	}
+
+	setWidth(w) {
+		this.shape.width = w;
+	}
+	setHeight(h) {
+		this.shape.height = h;
+	}
+
+	get velocity() {
+		return this.body.velocity;
+	}
+
+	setYVelocity(v) {
+		this.velocity[1] = v;
+	}
+
+	setXVelocity(v) {
+		this.velocity[0] = v;
+	}
 }
