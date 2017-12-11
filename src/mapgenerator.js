@@ -61,6 +61,7 @@ class MapGenerator {
 
                     for (let i = 0; i < KeyConstants.walls.length; i++) {
                         if (MapKey[mapLayout[r][c]].type == KeyConstants.walls[i]) {
+                            console.log('wall at ' + r + ' ' + c);
                             map[r][c] = new Wall(mapLayout[r][c], c * MapConstants.TILE_WIDTH + MapConstants.x, r * MapConstants.TILE_HEIGHT + MapConstants.y,
                                 MapConstants.TILE_WIDTH, MapConstants.TILE_HEIGHT);
                             continue;

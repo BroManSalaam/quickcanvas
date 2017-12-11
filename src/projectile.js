@@ -1,29 +1,40 @@
 
 class Projectile {
 
-	constructor(spd) {
+	/**
+	 * 
+	 * @param {Number} x
+	 * @param {Number} y 
+	 * @param {Number} width 
+	 * @param {Number} height 
+	 * @param {Number} spd 
+	 * @param {Number} angle 
+	 * @param {Number} offset 
+	 * @param {Number} xvelocity 
+	 * @param {Number} yvelocity
+	 * 
+	 * @description construct a new projectile with the given parameters
+	 *  
+	 */
+	constructor(x, y, width, height, spd, angle, offset, xvelocity, yvelocity) {
 
 		this.finished = false;
 
-		this.spd = spd;
-		
-		let angle = player.rotation;
-
 		this.body = new p2.Body({
-			position: [player.x + Math.cos(angle) + 24, player.y + Math.sin(angle) + 24],
-			mass: 10,
+			position: [x + Math.cos(angle) + width, y + Math.sin(angle) + height],
+			mass: 1,
 			type: p2.Body.DYNAMIC,
 			velocity: [ // initial velocity in ship direction
-				this.spd * Math.cos((angle - 90) * (Math.PI / 180)) + player.velocity[0],
-				this.spd * Math.sin((angle - 90) * (Math.PI / 180)) + player.velocity[1]
+				spd * Math.cos((angle - offset) * (Math.PI / 180)) + xvelocity,
+				spd * Math.sin((angle - offset) * (Math.PI / 180)) + yvelocity
 			],
 		});
 		
 		//console.log(Math.cos(player.rotation));
 
 		this.shape = new p2.Box({
-			width: 24,
-			height: 24,
+			width: width,
+			height: height,
 			collisionGroup: Constants.groups.GROUP_BULLET,
 			collisionMask: Constants.groups.GROUP_WALL | Constants.groups.GROUP_ENEMY | Constants.groups.GROUP_HOSTAGE
 		});

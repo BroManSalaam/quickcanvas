@@ -7,14 +7,12 @@ class AssetManager {
     loadAssets() {
 
         console.log('loading assets...');
-        let start = Date.now();
-
 
         try {
-
             let assets = [];
             assets[0] = mec_default.load();
             assets[1] = player.load();
+            //assets[2] = audio.load();
 
             // images that correspond to a number in key_type
             let key_src = [
@@ -59,9 +57,11 @@ class AssetManager {
             }
 
             Promise.all(assets).then((times) => {
+                // remove undefined times
                 times = times.filter(function (element) {
                     return element !== undefined;
                 });
+                // log sum of all times
                 console.log('loaded assets: ' + times.reduce((a, b) => a + b, 0) + ' ms');
                 this.isLoaded = true;
             }).catch((err) => {

@@ -18,6 +18,27 @@ class AudioManager {
         this.activeMusic = [];
         
     }
+
+    load() {
+        return new Promise((resolve, reject) => {
+            let start = Date.now();
+
+            for (const audio of this.sounds) {
+                if(!audio.readyState == 4) {
+                    console.log(`${audio} is not ready, state: ${audio.readyState} src: ${audio.src}`);
+                    reject();
+                }
+            }
+            for (const audio of this.sounds) {
+                if(!audio.readyState == 4) {
+                    console.log(`${audio} is not ready, state: ${audio.readyState} src: ${audio.src}`);
+                    reject();
+                }
+            }
+
+            resolve(Date.now() - start);
+        })
+    }
     
     /**
      * This will play the audio (sound effect) of the given name.

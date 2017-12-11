@@ -68,6 +68,8 @@ class Player {
         // bullets
         this.projectile = null;
         this.bullet_spd = 650;
+        this.bullet_width = 5;
+        this.bullet_height = 10;
         // if this.proj has already been added to the 
         this.bullet_isAdded = true;
 
@@ -257,7 +259,7 @@ class Player {
      * shoot at a given x and y coordinate
      */
     shoot() {
-        this.projectile = new Projectile(this.bullet_spd);
+        this.projectile = new Projectile(this.x, this.y, this.bullet_width, this.bullet_height, this.bullet_spd, this.rotation, this.rotation_offset, this.velocity[0], this.velocity[1]);
         audio.playSound("shot");
 
     }
